@@ -3,39 +3,78 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 const register = async (req, res) => {
-    // --------------- COMPLETAR ---------------
-    /*
+    try {
+        // 1. Verificar que el body de la request tenga los campos nombre, apellido, email y password
+        const { nombre, apellido, email, password } = req.body;
+        if (!nombre || !apellido || !email || !password) {
+            return res.status(400).json({ message: "Faltan campos obligatorios." });
+        }
 
-        Recordar que para cumplir con toda la funcionalidad deben:
+        // 3. Verificar que no exista un usuario con el mismo email
+        const usuarioExistente = await UsuariosService.findByEmail(email);
+        if (usuarioExistente) {
+            return res.status(400).json({ message: "El usuario ya existe." });
+        }
 
-            1. Verificar que el body de la request tenga el campo usuario
-            2. Verificar que el campo usuario tenga los campos nombre, apellido, email y password
-            3. Verificar que no exista un usuario con el mismo email (utilizando el servicio de usuario)
-            4. Devolver un mensaje de error si algo falló hasta el momento (status 400)
-            5. Hashear la contraseña antes de guardarla en la base de datos
-            6. Guardar el usuario en la base de datos (utilizando el servicio de usuario)
-            7. Devolver un mensaje de éxito si todo salió bien (status 201)
-            8. Devolver un mensaje de error si algo falló guardando al usuario (status 500)
-        
-    */
+        // 5. Hashear la contraseña antes de guardarla en la base de datos
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        // 6. Guardar el usuario en la base de datos
+        const nuevoUsuario = {
+            nombre,
+            apellido,
+            email,
+            password: hashedPassword, // Guardamos la contraseña hasheada
+        };
+
+        const usuarioGuardado = await UsuariosService.createUsuario(nuevoUsuario);
+
+        // 7. Devolver un mensaje de éxito si todo salió bien
+        res.status(201).json({ message: "Usuario creado con éxito.", usuario: usuarioGuardado });
+    } catch (error) {
+        // 8. Devolver un mensaje de error si algo falló guardando al usuario
+        res.status(500).json({ message: "Error al registrar el usuario." });
+    }
 };
 
 const login = async (req, res) => {
-    // --------------- COMPLETAR ---------------
-    /*
+    try {
+        // 1. Verificar que el body de la request tenga email y password
+        const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({ message: "Faltan email o contraseña." });
+        }
 
-        Recordar que para cumplir con toda la funcionalidad deben:
+        // 2. Buscar un usuario con el email recibido
+        const usuario = await UsuariosService.findByEmail(email);
+        if (!usuario) {
+            return res.status(400).json({ message: "Usuario no encontrado." });
+        }
 
-            1. Verificar que el body de la request tenga el campo email y password
-            2. Buscar un usuario con el email recibido
-            3. Verificar que el usuario exista
-            4. Verificar que la contraseña recibida sea correcta
-            5. Devolver un mensaje de error si algo falló hasta el momento (status 400)
-            6. Crear un token con el id del usuario y firmarlo con la clave secreta (utilizando la librería jsonwebtoken)
-            7. Devolver un json con el usuario y el token (status 200)
-            8. Devolver un mensaje de error si algo falló (status 500)
-        
-    */
+        // 4. Verificar que la contraseña recibida sea correcta
+        const esPasswordCorrecta = await bcrypt.compare(password, usuario.password);
+        if (!esPasswordCorrecta) {
+            return res.status(400).json({ message: "Contraseña incorrecta." });
+        }
+
+        const token = jwt.sign({ id: usuario.id }, process.env.JWT_SECRET, {
+            expiresIn: "1h", 
+        });
+
+        res.status(200).json({
+            message: "Inicio de sesión exitoso.",
+            usuario: {
+                id: usuario.id,
+                nombre: usuario.nombre,
+                email: usuario.email,
+            },
+            token,
+        });
+    } catch (error) {
+
+        res.status(500).json({ message: "Error al iniciar sesión." });
+    }
 };
 
 export default { register, login };

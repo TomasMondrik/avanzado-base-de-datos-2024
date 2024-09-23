@@ -1,0 +1,7 @@
+// LOG IN 
+POST http://localhost:3000/Auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+
+}

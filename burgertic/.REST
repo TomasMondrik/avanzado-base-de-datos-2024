@@ -1,7 +1,65 @@
-// LOG IN 
-POST http://localhost:3000/Auth/login HTTP/1.1
+### Registro de usuario
+POST http://localhost:3000/auth/register
 Content-Type: application/json
 
 {
-
+    "usuario": {
+        "nombre": "Nacho",
+        "apellido": "Vigi",
+        "email": "nacho.vigi@ort.com",
+        "password": "123456"
+    }
 }
+
+### Inicio de sesión
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+   "email": "nacho.vigi@ort.com",
+    "password": "123456"
+}
+
+### Obtener todos los pedidos (necesita token de autorización)
+GET http://localhost:3000/api/pedidos
+Authorization: Bearer {{token}}
+
+### Obtener un pedido por ID (necesita token de autorización)
+GET http://localhost:3000/api/pedidos/1
+Authorization: Bearer {{token}}
+
+### Obtener pedidos por usuario (necesita token de autorización)
+GET http://localhost:3000/api/pedidos/usuario
+Authorization: Bearer {{token}}
+
+### Crear un nuevo pedido (necesita token de autorización)
+POST http://localhost:3000/api/pedidos
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "idUsuario": 1,
+    "platos": [
+        {
+            "id": 1,
+            "cantidad": 2
+        },
+        {
+            "id": 2,
+            "cantidad": 1
+        }
+    ]
+}
+
+### Actualizar un pedido (necesita token de autorización)
+PUT http://localhost:3000/api/pedidos/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "estado": "en camino"
+}
+
+### Eliminar un pedido (necesita token de autorización)
+DELETE http://localhost:3000/api/pedidos/1
+Authorization: Bearer {{token}}

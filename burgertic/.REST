@@ -1,5 +1,5 @@
 ### Registro de usuario
-POST http://localhost:3000/auth/register
+POST http://localhost:9000/auth/register
 Content-Type: application/json
 
 {
@@ -12,11 +12,85 @@ Content-Type: application/json
 }
 
 ### Inicio de sesión
-POST http://localhost:3000/auth/login
+POST http://localhost:9000/auth/login
 Content-Type: application/json
 
 {
    "email": "nacho.vigi@ort.com",
     "password": "123456"
 }
-};
+
+### Obtener todos los pedidos (solo admin)
+GET http://localhost:9000/pedidos
+Authorization: Bearer {{token}}
+
+### Obtener pedidos por usuario (usuario autenticado)
+GET http://localhost:9000/pedidos/usuario
+Authorization: Bearer {{token}}
+
+### Obtener pedido por ID (usuario autenticado)
+GET http://localhost:9000/pedidos/{{id}}
+Authorization: Bearer {{token}}
+
+### Crear un nuevo pedido (usuario autenticado)
+POST http://localhost:9000/pedidos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "platos": [
+        { "id": 1, "cantidad": 2 },
+        { "id": 3, "cantidad": 1 }
+    ]
+}
+
+### Aceptar un pedido (solo admin)
+PUT http://localhost:9000/pedidos/{{id}}/aceptar
+Authorization: Bearer {{token}}
+
+### Comenzar un pedido (solo admin)
+PUT http://localhost:9000/pedidos/{{id}}/comenzar
+Authorization: Bearer {{token}}
+
+### Entregar un pedido (solo admin)
+PUT http://localhost:9000/pedidos/{{id}}/entregar
+Authorization: Bearer {{token}}
+
+### Eliminar un pedido (solo admin)
+DELETE http://localhost:9000/pedidos/{{id}}
+Authorization: Bearer {{token}}
+
+### Obtener todos los platos
+GET http://localhost:9000/platos
+
+### Obtener plato por ID
+GET http://localhost:9000/platos/{{id}}
+
+### Obtener platos por tipo
+GET http://localhost:9000/platos/tipo/{{tipo}}
+
+### Crear un plato (solo admin)
+POST http://localhost:9000/platos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "nombre": "Pizza",
+    "tipo": "principal",
+    "precio": 500
+}
+
+### Actualizar un plato (solo admin)
+PUT http://localhost:9000/platos/{{id}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "nombre": "Pizza",
+    "tipo": "principal",
+    "precio": 550
+}
+
+### Eliminar un plato (solo admin)
+DELETE http://localhost:9000/platos/{{id}}
+Authorization: Bearer {{token}}

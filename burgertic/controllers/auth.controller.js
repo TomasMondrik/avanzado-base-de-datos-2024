@@ -1,6 +1,7 @@
 import UsuariosService from "../services/usuarios.service.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import 'dotenv/config';
 
 const register = async (req, res) => {
     try {
@@ -11,7 +12,7 @@ const register = async (req, res) => {
         }
 
         // 3. Verificar que no exista un usuario con el mismo email
-        const usuarioExistente = await UsuariosService.findByEmail(email);
+        const usuarioExistente = await UsuariosService.getUsuarioByEmail(email);
         if (usuarioExistente) {
             return res.status(400).json({ message: "El usuario ya existe." });
         }
@@ -34,7 +35,7 @@ const register = async (req, res) => {
         res.status(201).json({ message: "Usuario creado con éxito.", usuario: usuarioGuardado });
     } catch (error) {
         // 8. Devolver un mensaje de error si algo falló guardando al usuario
-        res.status(500).json({ message: "Error al registrar el usuario." });
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -47,7 +48,7 @@ const login = async (req, res) => {
         }
 
         // 2. Buscar un usuario con el email recibido
-        const usuario = await UsuariosService.findByEmail(email);
+        const usuario = await UsuariosService.getUsuarioByEmail(email);
         if (!usuario) {
             return res.status(400).json({ message: "Usuario no encontrado." });
         }
@@ -73,7 +74,7 @@ const login = async (req, res) => {
         });
     } catch (error) {
 
-        res.status(500).json({ message: "Error al iniciar sesión." });
+        res.status(500).json({ message: error.message });
     }
 };
 

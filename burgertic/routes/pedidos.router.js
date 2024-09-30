@@ -18,11 +18,11 @@ router.get("/:id", verifyToken, PedidosController.getPedidoById);
 
 router.post("/", verifyToken, PedidosController.createPedido);
 
-router.put("/:id/aceptar", verifyToken, verifyAdmin, PedidosController.aceptarPedido);
+router.put("/aceptar/:id", verifyToken, verifyAdmin, PedidosController.aceptarPedido);
 
-router.put("/:id/comenzar", verifyToken, verifyAdmin, PedidosController.comenzarPedido);
+router.put("/comenzar/:id", verifyToken, verifyAdmin, PedidosController.comenzarPedido);
 
-router.put("/:id/entregar", verifyToken, verifyAdmin, PedidosController.entregarPedido);
+router.put("/entregar/:id", verifyToken, verifyAdmin, PedidosController.entregarPedido);
 
 router.delete("/:id", verifyToken, verifyAdmin, PedidosController.deletePedido);
 

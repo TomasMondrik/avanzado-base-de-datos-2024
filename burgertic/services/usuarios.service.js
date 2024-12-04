@@ -58,4 +58,9 @@ const createUsuario = async (usuario) => {
     }
 };
 
-export default { getUsuarioByEmail, getUsuarioById, createUsuario };
+//Agregó vigi en la clase
+//const upgradeUsuario = async (id) =>{
+// await client.query ("UPDATE usuarios SET admin = true WHERE id=$1", [id]); 
+
+
+export default { getUsuarioByEmail, getUsuarioById, createUsuario }; //Agregar upgradeUsuario

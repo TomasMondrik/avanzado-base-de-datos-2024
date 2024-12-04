@@ -1,0 +1,95 @@
+### Registro de usuario
+POST http://localhost:9000/auth/register
+Content-Type: application/json
+
+{
+
+    "nombre": "Nacho",
+    "apellido": "Vigi",
+    "email": "nacho.vigi@ort.com",
+    "password": "123456"
+}
+
+### Inicio de sesión
+POST http://localhost:9000/auth/login
+Content-Type: application/json
+
+{
+    "email": "nacho.vigi@ort.com",
+    "password": "123456"
+}
+
+### Obtener todos los pedidos (solo admin)
+GET http://localhost:9000/pedidos
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI3Njk2MDAwLCJleHAiOjE3Mjc2OTk2MDB9.S-Lm4eHwSZ8C3t0e0SN_CniAjF6GDxmwfvIMIQW9PZ8
+
+### Obtener pedidos por usuario (usuario autenticado)
+GET http://localhost:9000/pedidos/usuario
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI3Njk2MDAwLCJleHAiOjE3Mjc2OTk2MDB9.S-Lm4eHwSZ8C3t0e0SN_CniAjF6GDxmwfvIMIQW9PZ8
+
+### Obtener pedido por ID (usuario autenticado)
+GET http://localhost:9000/pedidos/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI3Njk2MDAwLCJleHAiOjE3Mjc2OTk2MDB9.S-Lm4eHwSZ8C3t0e0SN_CniAjF6GDxmwfvIMIQW9PZ8
+
+### Crear un nuevo pedido (usuario autenticado)
+POST http://localhost:9000/pedidos
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI3Njk2MDAwLCJleHAiOjE3Mjc2OTk2MDB9.S-Lm4eHwSZ8C3t0e0SN_CniAjF6GDxmwfvIMIQW9PZ8
+Content-Type: application/json
+
+{
+    "platos": [
+        { "id": 1, "cantidad": 2 },
+        { "id": 3, "cantidad": 1 }
+    ]
+}
+
+### Aceptar un pedido (solo admin)
+PUT http://localhost:9000/pedidos/aceptar/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI3Njk2MDAwLCJleHAiOjE3Mjc2OTk2MDB9.S-Lm4eHwSZ8C3t0e0SN_CniAjF6GDxmwfvIMIQW9PZ8
+
+### Comenzar un pedido (solo admin)
+PUT http://localhost:9000/pedidos/comenzar/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI3Njk2MDAwLCJleHAiOjE3Mjc2OTk2MDB9.S-Lm4eHwSZ8C3t0e0SN_CniAjF6GDxmwfvIMIQW9PZ8
+
+### Entregar un pedido (solo admin)
+PUT http://localhost:9000/pedidos/entregar/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI3Njk2MDAwLCJleHAiOjE3Mjc2OTk2MDB9.S-Lm4eHwSZ8C3t0e0SN_CniAjF6GDxmwfvIMIQW9PZ8
+
+### Eliminar un pedido (solo admin)
+DELETE http://localhost:9000/pedidos/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI3Njk2MDAwLCJleHAiOjE3Mjc2OTk2MDB9.S-Lm4eHwSZ8C3t0e0SN_CniAjF6GDxmwfvIMIQW9PZ8
+
+### Obtener todos los platos
+GET http://localhost:9000/platos
+
+### Obtener plato por ID
+GET http://localhost:9000/platos/1
+
+### Obtener platos por tipo
+GET http://localhost:9000/platos/tipo/tipo
+
+### Crear un plato (solo admin)
+POST http://localhost:9000/platos
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI3Njk2MDAwLCJleHAiOjE3Mjc2OTk2MDB9.S-Lm4eHwSZ8C3t0e0SN_CniAjF6GDxmwfvIMIQW9PZ8
+Content-Type: application/json
+
+{
+    "nombre": "Pizza",
+    "tipo": "principal",
+    "precio": 500
+}
+
+### Actualizar un plato (solo admin)
+PUT http://localhost:9000/platos/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI3Njk2MDAwLCJleHAiOjE3Mjc2OTk2MDB9.S-Lm4eHwSZ8C3t0e0SN_CniAjF6GDxmwfvIMIQW9PZ8
+Content-Type: application/json
+
+{
+    "nombre": "Pizza",
+    "tipo": "principal",
+    "precio": 550
+}
+
+### Eliminar un plato (solo admin)
+DELETE http://localhost:9000/platos/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI3Njk2MDAwLCJleHAiOjE3Mjc2OTk2MDB9.S-Lm4eHwSZ8C3t0e0SN_CniAjF6GDxmwfvIMIQW9PZ8

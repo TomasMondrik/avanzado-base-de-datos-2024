@@ -14,7 +14,30 @@ export const verifyToken = async (req, res, next) => {
     
         Recordar también que si sucede cualquier error en este proceso, deben devolver un error 401 (Unauthorized)
     */
-};
+               try {
+                const authHeader = req.headers.authorization;
+                if (!authHeader || !authHeader.startsWith("Bearer ")) {
+                    return res.status(401).json({ message: "Token no proporcionado o en formato incorrecto" });
+                }
+        
+                const token = authHeader.split(" ")[1];
+        
+                jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+                    if (err) {
+                        return res.status(401).json({ message: "Token no válido" });
+                    }
+        
+                    if (!decoded || !decoded.id) {
+                        return res.status(401).json({ message: "Token no contiene un id de usuario válido" });
+                    }
+        
+                    req.userId = decoded.id;
+                    next();
+                });
+            } catch (error) {
+                return res.status(401).json({ message: "Error al verificar el token" });
+            }
+        };
 
 export const verifyAdmin = async (req, res, next) => {
     // --------------- COMPLETAR ---------------
@@ -26,4 +49,19 @@ export const verifyAdmin = async (req, res, next) => {
             2. Si no lo es, devolver un error 403 (Forbidden)
     
     */
-};
+            try {
+                const usuario = await UsuariosService.getUserById(req.userId);
+        
+                if (!usuario) {
+                    return res.status(403).json({ message: "Usuario no encontrado" });
+                }
+        
+                if (!usuario.isAdmin) {
+                    return res.status(403).json({ message: "Acceso denegado, usuario no es administrador" });
+                }
+        
+                next();
+            } catch (error) {
+                return res.status(403).json({ message: "Error al verificar los permisos de administrador" });
+            }
+        };

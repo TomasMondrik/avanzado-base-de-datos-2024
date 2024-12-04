@@ -1,5 +1,8 @@
 import PlatosService from "../services/platos.service.js";
+/*const getPlatosByPedido = async (req,res) =>{
 
+}
+*/
 const getPlatos = async (req, res) => {
     try {
         const platos = await PlatosService.getPlatos();
@@ -92,6 +95,7 @@ const getPlatosByTipo = async (req, res) => {
 };
 
 export default {
+    //getPlatosByPedido,
     getPlatos,
     getPlatoById,
     createPlato,

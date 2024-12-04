@@ -15,7 +15,7 @@ export const verifyToken = async (req, res, next) => {
             .json({ message: "Se necesita estar autenticado" });
 
     try {
-        const decoded = jwt.verify(token, process.env.SECRET);
+        const decoded = jwt.verify(token, "HolaPepe"/*process.env.SECRET*/);
 
         if (!decoded.id)
             return res.status(401).json({ message: "Token inválido" });
@@ -42,7 +42,7 @@ export const verifyAdmin = async (req, res, next) => {
             .json({ message: "Se necesita estar autenticado" });
 
     try {
-        const decoded = jwt.verify(token, process.env.SECRET);
+        const decoded = jwt.verify(token, "HolaPepe"/*process.env.SECRET*/);
 
         if (!decoded.id)
             return res.status(401).json({ message: "Token inválido" });
